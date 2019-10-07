@@ -1,14 +1,14 @@
 - 快速入门
   - [简介](README)
-  - [快速集成](Quick Install)
-  - [快速开始](Quick Start)
+  - [快速集成](Quick-Install)
+  - [快速开始](Quick-Start)
   - [注解](Annotation)
 - 核心功能
-  - [简单条件查询](Simple Conditional Query)
-  - [复杂条件查询](Complex Conditional Query)
-  - [复杂sql查询](Complex SQL Query)
+  - [简单条件查询](Simple-Conditional-Query)
+  - [复杂条件查询](Complex-Conditional-Query)
+  - [复杂sql查询](Complex-SQL-Query)
 - 自定义扩展
   - [自定义查询]()
   - [自定义注解]()
-- [常见问题](Common Problem)
+- [常见问题](Common-Problem)
 - [更新记录](UPDATELOG)
