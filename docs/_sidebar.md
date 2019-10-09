@@ -1,15 +1,13 @@
 - 快速入门
   - [简介](README)
-  - [与 MyBatis 的 SQL 比较](compare-mybatis)
   - [快速集成](quick-install)
   - [快速开始](quick-start)
-  - [@QueryFenix 注解](queryfenix-introduction)
-- XML方式
-  - [逻辑控制语法](xml/logic-control)
-  - [SQL 语义化标签](xml/xml-tags)
-  - [自定义标签](xml/custom-tag)
-- Java方式
-  - [总体示例](java/example)
-  - [API 方法](java/main-method)
-- [更多功能](more-features)
-- [版本更新记录](CHANGELOG)
+  - [注解](annotation)
+- 条件查询自动化
+  - [定义查询属性](easy/logic-control)
+  - [查询调用](easy/xml-tags)
+- 复杂条件查询
+  - [总体示例](complex/example)
+  - [API 方法](complex/method)
+- [功能扩展](more-features)
+- [更新记录](CHANGELOG)
