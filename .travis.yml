@@ -1,5 +1,9 @@
 language: java
 
+install: skip
+
+script: skip
+
 after_script:
   - git init
   - git config user.name "azhengZJ"
