@@ -17,7 +17,7 @@
 
 所有，为了减少开发人员书写sql和查询逻辑代码 ，Zuji-JPA 中引入了 入参定义式查询 和 简单式Java 链式 API 来替代动态 SQL。基本解决开发过程中遇到的大部分场景，用更简单的方式去实现动态查询。
 
-当然，开发中还是会遇到更复杂的sql场景，这里引入了 [Fenix](https://blinkfox.github.io/fenix/) 开源库，可以比mybatis更方便的去书写动态SQL.
+当然，开发中还是会遇到更复杂的sql场景，这里引入了 [Fenix](https://github.com/blinkfox/fenix) 开源库，可以比mybatis更方便的去书写动态SQL.
 
 
 ## 开源许可证
