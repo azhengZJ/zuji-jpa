@@ -2,12 +2,12 @@
   - [简介](README)
   - [快速集成](quick-install)
   - [快速开始](quick-start)
-  - [注解](annotation)
 - 条件查询自动化
-  - [定义查询属性](easy/logic-control)
-  - [查询调用](easy/xml-tags)
+  - [总体示例](easy/example)
+  - [注解](easy/annotation)
+  - [自定义扩展](easy/extend)
 - 复杂条件查询
   - [总体示例](complex/example)
-  - [API 方法](complex/method)
+  - [API方法](complex/method)
 - [功能扩展](more-features)
 - [更新记录](CHANGELOG)
