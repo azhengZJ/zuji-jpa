@@ -1,4 +1,8 @@
-script: ignore
+language: java
+
+install: skip
+
+script: skip
 
 after_script:
   - git init
