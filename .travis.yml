@@ -1,0 +1,18 @@
+language: java
+
+after_script:
+  - git init
+  - git config user.name "azhengZJ"
+  - git config user.email "1009460334@qq.com"
+  - git add .
+  - git commit -a -m "Auto update docs by Travis CI."
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master
+
+branches:
+  only:
+    - develop
+
+env:
+  global:
+    - GH_REF: github.com/azhengZJ/zuji-jpa.git
+
