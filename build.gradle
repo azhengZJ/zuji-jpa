@@ -4,6 +4,8 @@ plugins {
     id 'java'
 }
 
+apply from: '$rootDir/publish.gradle'
+
 group = 'top.spring-data-jpa'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
@@ -29,78 +31,4 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 }
 
-
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
-
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    classifier = 'sources'
-}
-
-task javadocJar(type: Jar) {
-    from javadoc
-    classifier = 'javadoc'
-}
-
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            artifact sourcesJar
-            artifact javadocJar
-            pom {
-                // 构件名称
-                // 区别于artifactId，可以理解为artifactName
-                name = 'zuji-jpa'
-                // 构件描述
-                description = 'To solve complex dynamic SQL'
-                // 构件主页
-                url = 'https://zuji-jpa.spring-data-jpa.top'
-                // 许可证名称和地址
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                // 开发者信息
-                developers {
-                    developer {
-                        name = 'azheng'
-                        email = '18055661285@163.com'
-                    }
-                }
-                // 版本控制仓库地址
-                scm {
-                    url = 'https://github.com/azhengZJ/zuji-jpa'
-                    connection = 'scm:git:git://github.com/azhengZJ/zuji-jpa.git'
-                    developerConnection = 'scm:git:ssh://git@github.com:azhengZJ/zuji-jpa.git'
-                }
-            }
-        }
-    }
-    // 定义发布到哪里
-    repositories {
-        maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots"
-            credentials {
-                username sonatypeUsername
-                password sonatypePassword
-            }
-        }
-    }
-}
-
-signing {
-    sign publishing.publications.mavenJava
-}
-
-
-javadoc {
-    // <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    // 防止本地打开中文乱码
-    options.addStringOption("charset", "UTF-8")
-}
 
