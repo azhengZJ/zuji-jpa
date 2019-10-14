@@ -1,18 +1,22 @@
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    classifier = 'sources'
-}
-
-task javadocJar(type: Jar) {
-    from javadoc
-    classifier = 'javadoc'
+javadoc {
+    options.addStringOption("charset", "UTF-8")
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = 'sources'
+}
+
+task javadocJar(type: Jar) {
+    from javadoc
+    archiveClassifier = 'javadoc'
 }
 
 publishing {
@@ -55,7 +59,9 @@ publishing {
     // 定义发布到哪里
     repositories {
         maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots"
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
             credentials {
                 username sonatypeUsername
                 password sonatypePassword
@@ -68,7 +74,3 @@ signing {
     sign publishing.publications.mavenJava
 }
 
-
-javadoc {
-    options.addStringOption("charset", "UTF-8")
-}

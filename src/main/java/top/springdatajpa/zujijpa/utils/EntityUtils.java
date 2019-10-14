@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 属性转换工具类
+ * Attribute Transfer Tool
  *
  * @author azheng
- * @date 2019年10月10日
+ * @since 2019/10/10
  */
 @Slf4j
 @UtilityClass
@@ -23,10 +23,10 @@ public class EntityUtils {
 
     /**
      *  集合转换成指定类型的List
-     * @param source
-     * @param clazz
-     * @param <T>
-     * @return
+     * @param source source
+     * @param clazz clazz
+     * @param <T> T
+     * @return List
      */
     public static <T> List<T> cast(Collection<?> source, Class<T> clazz) {
         return JSON.parseArray(JSON.toJSONString(source), clazz);

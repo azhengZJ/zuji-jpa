@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 /**
  * @author azheng
- * @date 2019/9/30
+ * @since 2019/9/30
  */
 public enum OperatorEnum {
     EQUAL(e -> e.getSpecWrapper().eq(e.getName(), e.getValue())),

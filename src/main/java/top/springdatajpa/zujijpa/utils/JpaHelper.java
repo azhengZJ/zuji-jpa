@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * <p>
- * JPA辅助类
+ * JPA Helper
  * </p>
  *
  * @author azheng
