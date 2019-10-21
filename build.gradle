@@ -5,8 +5,9 @@ plugins {
 }
 
 group = 'top.spring-data-jpa'
-version = '0.0.1'
+version = '0.0.4'
 sourceCompatibility = '1.8'
+jar.enabled(true)
 
 configurations {
     developmentOnly
