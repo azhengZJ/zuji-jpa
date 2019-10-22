@@ -3,7 +3,7 @@ package top.springdatajpa.zujijpa.config;
 import org.hibernate.dialect.MySQL5Dialect;
 
 /**
- * Mysql自动建表配置类
+ * Mysql -- Automatic table creation configuration
  * @author azheng
  * @since 2019/10/22
  */

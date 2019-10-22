@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
- * 多数据源配置辅助类
+ * Multiple data-source configuration helper class
  * @author azheng
  * @since 2019/10/22
  */
