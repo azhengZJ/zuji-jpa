@@ -5,9 +5,19 @@ plugins {
 }
 
 group = 'top.spring-data-jpa'
-version = '0.0.4'
+version = '0.0.5'
 sourceCompatibility = '1.8'
+
 jar.enabled(true)
+
+jar {
+    manifest {
+        attributes 'Manifest-Version': project.version
+        attributes 'Built-By': "azheng"
+        attributes 'Created-By': "Gradle " + gradle.gradleVersion
+        attributes 'Build-Jdk': java.sourceCompatibility
+    }
+}
 
 configurations {
     developmentOnly
