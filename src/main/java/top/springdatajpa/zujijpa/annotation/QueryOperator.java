@@ -1,6 +1,6 @@
 package top.springdatajpa.zujijpa.annotation;
 
-import top.springdatajpa.zujijpa.enums.OperatorEnum;
+import top.springdatajpa.zujijpa.enums.Operator;
 
 import java.lang.annotation.*;
 
@@ -12,6 +12,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface QueryOperator {
-    OperatorEnum value() default OperatorEnum.EQUAL;
+    Operator value() default Operator.EQUAL;
     String fieldName() default "";
 }

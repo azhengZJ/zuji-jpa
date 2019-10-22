@@ -5,7 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 import top.springdatajpa.zujijpa.annotation.QueryIgnore;
 import top.springdatajpa.zujijpa.annotation.QueryOperator;
-import top.springdatajpa.zujijpa.enums.OperatorEnum;
+import top.springdatajpa.zujijpa.enums.Operator;
 import top.springdatajpa.zujijpa.wrapper.OperatorWrapper;
 import top.springdatajpa.zujijpa.wrapper.SpecificationWrapper;
 
@@ -53,9 +53,9 @@ public class SpecificationUtils {
                 QueryOperator query = k.getAnnotation(QueryOperator.class);
                 JoinColumn joinCol = k.getAnnotation(JoinColumn.class);
                 if(ignore != null) return;
-                OperatorEnum operator = query != null?query.value():OperatorEnum.EQUAL;
+                Operator operator = query != null?query.value(): Operator.EQUAL;
                 if(v instanceof Collection){
-                    operator = OperatorEnum.IN;
+                    operator = Operator.IN;
                 }
                 if(query != null && StringUtils.hasText(query.fieldName())){
                     wrapper.setName(getPathName(query.fieldName(), joinCol));

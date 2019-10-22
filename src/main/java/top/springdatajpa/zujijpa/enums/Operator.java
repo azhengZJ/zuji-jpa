@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  * @author azheng
  * @since 2019/9/30
  */
-public enum OperatorEnum {
+public enum Operator {
     EQUAL(e -> e.getSpecWrapper().eq(e.getName(), e.getValue())),
     LIKE(e -> e.getSpecWrapper().like(e.getName(), (String)e.getValue())),
     STARTING_WITH(e -> e.getSpecWrapper().startingWith(e.getName(), (String)e.getValue())),
@@ -22,7 +22,7 @@ public enum OperatorEnum {
     IN(e -> e.getSpecWrapper().in(e.getName(), (Collection<?>) e.getValue()))
     ;
     private Consumer<OperatorWrapper> consumer;
-    OperatorEnum(Consumer<OperatorWrapper> consumer){
+    Operator(Consumer<OperatorWrapper> consumer){
             this.consumer = consumer;
     }
     public Consumer<OperatorWrapper> consumer(){
