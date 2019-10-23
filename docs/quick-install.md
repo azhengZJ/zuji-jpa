@@ -1,7 +1,22 @@
 ## 支持场景
 
-适用于 Java `Spring Data JPA` 项目，`JDK 1.8` 及以上，Spring Data JPA 的版本须保证 `2.1.8.RELEASE` 及以上；如果你是 Spring Boot 项目，则 Spring Boot 的版本须保证 `2.1.5.RELEASE` 及以上。因为后续版本的 Spring Data JPA 对其中 `QueryLookupStrategy` 的代码有较大改动。
+适用于 Java `Spring Data JPA` 项目，`JDK 1.8` 及以上，Spring Data JPA 版本无具体要求。
 
-## Spring Boot 项目集成 
+## Spring 项目集成
+
+如果你是 Spring 项目，请直接集成zuji-jpa库，默认spring boot和spring mvc都支持。
+
+gradle
+```groovy
+implementation 'top.spring-data-jpa:zuji-jpa:0.0.7'
+```
+maven
+```xml
+<dependency>
+  <groupId>top.spring-data-jpa</groupId>
+  <artifactId>zuji-jpa</artifactId>
+  <version>0.0.7</version>
+</dependency>
+```
 
 正在整理中。。。敬请期待
