@@ -2,11 +2,11 @@
   - [简介](README)
   - [快速集成](quick-install)
   - [快速开始](quick-start)
-- 条件查询自动化
+- 定义式零逻辑
   - [总体示例](easy/example)
   - [注解](easy/annotation)
   - [自定义扩展](easy/extend)
-- 复杂条件查询
+- 简单java动态链式
   - [总体示例](complex/example)
   - [API方法](complex/method)
 - [功能扩展](more-features)
