@@ -10,6 +10,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Multiple data-source configuration helper class
@@ -19,14 +21,36 @@ import java.util.Properties;
 public class RepositoryConfigHelper {
 
     public static LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, String entityPackage) {
+        return entityManagerFactory(dataSource, entityPackage, (a,p) -> {});
+    }
+
+    /**
+     * 默认开启sql日志打印、开启自动建表、开启下划线和驼峰自动转换，MYSQL DIALECT
+     * @param dataSource
+     * @param entityPackage
+     * @param action
+     * @return
+     */
+    public static LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, String entityPackage,
+                                                                              BiConsumer<HibernateJpaVendorAdapter,Properties> action) {
+        return entityManagerFactory(dataSource, entityPackage, factory -> {
+            HibernateJpaVendorAdapter jpaAdapter = new HibernateJpaVendorAdapter() {{
+                setShowSql(true);
+                setGenerateDdl(true);
+            }};
+            Properties properties = getProperties();
+            action.accept(jpaAdapter,properties);
+            factory.setJpaVendorAdapter(jpaAdapter);
+            factory.setJpaProperties(properties);
+        });
+    }
+
+    public static LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, String entityPackage,
+                                                                              Consumer<LocalContainerEntityManagerFactoryBean> action) {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(dataSource);
         factory.setPackagesToScan(entityPackage);
-        factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter(){{
-            setShowSql(true);
-            setGenerateDdl(true);
-        }});
-        factory.setJpaProperties(getProperties());
+        action.accept(factory);
         return factory;
     }
 
