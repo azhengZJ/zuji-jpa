@@ -20,6 +20,7 @@
 
 当然，开发中还是会遇到更复杂的sql场景，这里引入了 [Fenix](https://github.com/blinkfox/fenix) 开源库，可以比mybatis更方便的去书写动态SQL。
 
+如果有任何问题或想要更多交流，请加QQ群 `758629787`。
 
 ## 开源许可证
 
