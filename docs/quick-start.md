@@ -18,8 +18,10 @@ public interface BlogRepository extends BaseRepository<Blog> {
 
 入参定义式查询仅支持单层条件查询，支持JOIN，支持equal、like、in、between等这些常用的查询关键字，多层嵌套复杂查询请参考下一节java动态链式查询。
 
-首先要定义查询入参的实体类，如果字段为null则不参与条件查询，默认使用的是equal(=)，如果是Collection类型的字段，默认使用的是 IN 查询，
+首先要定义查询入参的实体类，如果字段为NULL则不参与条件查询，默认使用的是equal(=)，如果是Collection类型的字段，默认使用的是 IN 查询，
 也可以使用@QueryOperator 注解里面的 `fieldName` 字段来定义对应数据库的字段名称。
+
+  
 ```java
 /**
  *  如果字段为null则不参与条件查询，默认使用的是equal(=)，
@@ -50,9 +52,52 @@ public class ReqBlogQueryVO {
      *  无注解默认使用的是等于
      */
     private Integer status;
+    /**
+     *  LEFT_JOIN的方式有两种，下面使用的是第二种
+     */
+    @JoinColumn(name="createUser")
+    @QueryOperator(Operator.CONTAINS)
+    private String userName;
+
    
 }
 ```
+
+入参定义式查询支持JOIN，LEFT_JOIN的方式有两种，以下任选其一即可。
+
+  1、@QueryOperator注解指定实体类JOIN别名，如 @QueryOperator(fieldName="createUser.userName",value=Operator.CONTAINS)
+  
+  2、@JoinColumn注解指定JOIN的关联字段名，如 @JoinColumn(name="createUser")
+  
+由于Spring Data Jpa是基于Hibernate开发的，所以JOIN还是继承了Hibernate面向对象的方式，需要在实体类里面定义好关联关系。
+
+注：如果开启了自动建表而又不想在数据库创建外键关联的话需要加上注解 @JoinColumn(foreignKey = @ForeignKey(NO_CONSTRAINT))。
+
+```java
+@Data
+@Entity
+@FieldNameConstants
+@EntityListeners(AuditingEntityListener.class)
+public class Blog {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+    private String author;
+    private String content;
+    private String status;
+    @CreatedDate
+    private Date createTime;
+    /**
+     * 定义和User表的关联关系
+     */
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(NO_CONSTRAINT))
+    private User createUser;
+
+}
+```
+
 
 定义好之后就可以直接使用入参实体类生成查询条件，进行查询。
 ```java
@@ -74,14 +119,15 @@ public class BlogController {
 等同于如下sql，如果字段值为NULL，则不参与条件查询。
 ```sql
 SELECT 
-    *
+    b.*
 FROM
-    blog
+    blog b left outer join user u on b.createUserId = u.id
 WHERE
-    title LIKE 'zuji%'
-        AND author IN ('azheng1' , 'azheng2')
-        AND content LIKE '%内容%'
-        AND status = 0;
+    b.title LIKE 'zuji%'
+        AND b.author IN ('azheng1' , 'azheng2')
+        AND b.content LIKE '%博客%'
+        AND b.status = 0
+        AND a.user_name = 'azheng'
 ```
 
 
@@ -164,3 +210,26 @@ ORDER BY
 	LIMIT 0,10
 ```
 
+注：上述示例中查询的字段名使用的是字符串，字符串是不被检查的，很容易出错。lombok提供了可以生成和属性名一样的的静态字段内部类的注解，实体类上面添加@FieldNameConstants注解即可使用。
+```java
+@RestController
+@RequestMapping("/user")
+public class UserController {
+    
+    @Autowired
+    private UserRepository repository;
+    
+    @GetMapping("/list")
+    public Page<User> list(ReqUserListVO params) {
+       Specification<User> spec = SpecificationUtils.where(e -> {
+           e.eq(User.Fields.userType, params.getUserType())
+            .contains(User.Fields.userName, params.getUserName())
+            .eq(User.Fields.assigneeId, AuthHelper.currentUserId())
+            .or(e2 -> e2.eq(User.Fields.status, "1").eq(User.Fields.status, "2"))
+            .eq(User.Fields.deleted, 0);
+       });
+       Sort sort = Sort.by("createTime").descending();
+       return repository.findAll(spec, params.pageRequest(sort));
+    }
+}
+```
