@@ -16,6 +16,8 @@ public interface BlogRepository extends BaseRepository<Blog> {
 
 ### 单层多条件查询（入参定义式零逻辑）
 
+入参定义式查询仅支持单层条件查询，支持JOIN，支持equal、like、in、between等这些常用的查询关键字，多层嵌套复杂查询请参考下一节java动态链式查询。
+
 首先要定义查询入参的实体类，如果字段为null则不参与条件查询，默认使用的是equal(=)，如果是Collection类型的字段，默认使用的是 IN 查询，
 也可以使用@QueryOperator 注解里面的 `fieldName` 字段来定义对应数据库的字段名称。
 ```java
