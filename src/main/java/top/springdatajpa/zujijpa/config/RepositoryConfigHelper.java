@@ -25,7 +25,9 @@ public class RepositoryConfigHelper {
     }
 
     /**
-     * 默认开启sql日志打印、开启自动建表、开启下划线和驼峰自动转换，MYSQL DIALECT
+     *
+     * By default, SQL log printing, automatic table creation,
+     *   underline and hump automatic conversion, mysql dialect are enabled.
      * @param dataSource
      * @param entityPackage
      * @param action
