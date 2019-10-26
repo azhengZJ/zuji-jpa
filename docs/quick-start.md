@@ -102,6 +102,7 @@ public class Blog {
 
 
 定义好之后就可以直接使用入参实体类生成查询条件，进行查询。
+
 ```java
 @RestController
 @RequestMapping("/blog")
@@ -119,6 +120,7 @@ public class BlogController {
 ```
 
 等同于如下sql，如果字段值为NULL，则不参与条件查询。
+
 ```sql
 SELECT 
     b.*
@@ -214,6 +216,7 @@ ORDER BY
 ```
 
 > **注**：上述示例中查询的字段名使用的是字符串，字符串是不被检查的，很容易出错。lombok提供了可以生成和属性名一样的的静态字段内部类的注解，实体类上面添加@FieldNameConstants注解即可使用。
+
 ```java
 @RestController
 @RequestMapping("/user")
