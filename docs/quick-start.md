@@ -14,7 +14,8 @@ public interface BlogRepository extends BaseRepository<Blog> {
 }
 ```
 
-## 单层多条件查询（入参定义式零逻辑）
+## 单层多条件查询
+> 入参定义式零逻辑
 
 入参定义式查询仅支持单层条件查询，支持JOIN，支持equal、like、in、between等这些常用的查询关键字，多层嵌套复杂查询请参考下一节java动态链式查询。
 
@@ -132,7 +133,8 @@ WHERE
 ```
 
 
-## 多层嵌套复杂条件查询（极简java动态链式）
+## 多层嵌套复杂条件查询
+> 极简java动态链式
 
 此查询类似于mybatis-plus的条件构造器。
 以下示例包含：动态条件查询 + or 嵌套条件+ 排序+ 分页
