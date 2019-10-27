@@ -242,7 +242,7 @@ public Page<User> list(ReqUserListVO params) {
 
 Zuji-Jpa支持将`入参定义式`和`JAVA动态链式`两者结合在一起使用，可以面对更多复杂的场景。
 
-首先需要定义入参实体类，具体参考[入参定义式](#/quick-start?id=_1%e3%80%81%e5%8d%95%e5%b1%82%e5%a4%9a%e6%9d%a1%e4%bb%b6%e6%9f%a5%e8%af%a2)，定义好之后直接进行查询；
+首先需要定义入参实体类，具体参考[入参定义式](#_1%e3%80%81%e5%8d%95%e5%b1%82%e5%a4%9a%e6%9d%a1%e4%bb%b6%e6%9f%a5%e8%af%a2)，定义好之后直接进行查询；
 
 ```java
 @PostMapping("/list")
