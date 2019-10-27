@@ -14,7 +14,7 @@ public interface BlogRepository extends BaseRepository<Blog> {
 }
 ```
 
-## <a id="parameterDefinition">1、单层多条件查询</a>
+## 1、单层多条件查询
 > 入参定义式零逻辑
 
 入参定义式查询仅支持单层条件查询，支持JOIN，支持equal、like、in、between等这些常用的查询关键字，多层嵌套复杂查询请参考下一节java动态链式查询。
@@ -242,7 +242,7 @@ public Page<User> list(ReqUserListVO params) {
 
 Zuji-Jpa支持将`入参定义式`和`JAVA动态链式`两者结合在一起使用，可以面对更多复杂的场景。
 
-首先需要定义入参实体类，具体参考[入参定义式](#parameterDefinition)，定义好之后直接进行查询；
+首先需要定义入参实体类，具体参考[入参定义式](#_1、单层多条件查询)，定义好之后直接进行查询；
 
 ```java
 @PostMapping("/list")
