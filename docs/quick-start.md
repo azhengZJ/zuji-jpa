@@ -14,7 +14,7 @@ public interface BlogRepository extends BaseRepository<Blog> {
 }
 ```
 
-## <a id="parameterDefinition">单层多条件查询</a>
+## <a id="parameterDefinition">1、单层多条件查询</a>
 > 入参定义式零逻辑
 
 入参定义式查询仅支持单层条件查询，支持JOIN，支持equal、like、in、between等这些常用的查询关键字，多层嵌套复杂查询请参考下一节java动态链式查询。
@@ -126,7 +126,7 @@ WHERE
 ```
 
 
-## 多层嵌套复杂条件查询
+## 2、多层嵌套复杂条件查询
 > java动态链式
 
 此查询类似于mybatis-plus的条件构造器。
@@ -206,7 +206,23 @@ ORDER BY
 	LIMIT 0,10
 ```
 
+> **注**：如果第一层（最外面层）是OR关联查询，调用where方法的时候需要添加一个参数Predicate.BooleanOperator.OR
+```java
+Specification<Blog> spec = SpecificationUtils.where(Predicate.BooleanOperator.OR, e -> {
+    e.eq(Blog.Fields.deleted,query.getAuthor());
+});
+return repository.findAll(spec);
+```
+
 > **注**：上述示例中查询的字段名使用的是字符串，字符串是不被检查的，很容易出错。lombok提供了可以生成和属性名一样的的静态字段内部类的注解，实体类上面添加@FieldNameConstants注解即可使用。
+
+```java
+//...省略
+@FieldNameConstants
+public class Blog {
+    //...省略
+}
+```
 
 ```java
 public Page<User> list(ReqUserListVO params) {
@@ -222,8 +238,19 @@ public Page<User> list(ReqUserListVO params) {
 }
 ```
 
-##两者结合使用
+## 3、两者结合使用
 
 Zuji-Jpa支持将`入参定义式`和`JAVA动态链式`两者结合在一起使用，可以面对更多复杂的场景。
 
-首先需要定义入参实体类，具体参考[入参定义式](#parameterDefinition)
+首先需要定义入参实体类，具体参考[入参定义式](#parameterDefinition)，定义好之后直接进行查询；
+
+```java
+@PostMapping("/list")
+public Object list(@RequestBody ReqBlogQueryVO query){
+    Specification<Blog> spec = SpecificationUtils.conditionOf(query,e -> {
+        e.eq(Blog.Fields.deleted,query.getAuthor());
+        // 如上，在此添加需要的查询，参考第二节 java动态链式 查询
+    });
+    return repository.findAll(spec);
+}
+```
