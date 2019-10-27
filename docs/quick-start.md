@@ -14,7 +14,7 @@ public interface BlogRepository extends BaseRepository<Blog> {
 }
 ```
 
-## 单层多条件查询
+## <a id="parameterDefinition">单层多条件查询</a>
 > 入参定义式零逻辑
 
 入参定义式查询仅支持单层条件查询，支持JOIN，支持equal、like、in、between等这些常用的查询关键字，多层嵌套复杂查询请参考下一节java动态链式查询。
@@ -79,17 +79,8 @@ public class ReqBlogQueryVO {
 @Data
 @Entity
 @FieldNameConstants
-@EntityListeners(AuditingEntityListener.class)
 public class Blog {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String title;
-    private String author;
-    private String content;
-    private String status;
-    @CreatedDate
-    private Date createTime;
+    //......其他属性省略
     /**
      * 定义和User表的关联关系
      */
@@ -136,7 +127,7 @@ WHERE
 
 
 ## 多层嵌套复杂条件查询
-> 极简java动态链式
+> java动态链式
 
 此查询类似于mybatis-plus的条件构造器。
 以下示例包含：动态条件查询 + or 嵌套条件+ 排序+ 分页
@@ -218,24 +209,21 @@ ORDER BY
 > **注**：上述示例中查询的字段名使用的是字符串，字符串是不被检查的，很容易出错。lombok提供了可以生成和属性名一样的的静态字段内部类的注解，实体类上面添加@FieldNameConstants注解即可使用。
 
 ```java
-@RestController
-@RequestMapping("/user")
-public class UserController {
-    
-    @Autowired
-    private UserRepository repository;
-    
-    @GetMapping("/list")
-    public Page<User> list(ReqUserListVO params) {
-       Specification<User> spec = SpecificationUtils.where(e -> {
-           e.eq(User.Fields.userType, params.getUserType())
-            .contains(User.Fields.userName, params.getUserName())
-            .eq(User.Fields.assigneeId, AuthHelper.currentUserId())
-            .or(e2 -> e2.eq(User.Fields.status, "1").eq(User.Fields.status, "2"))
-            .eq(User.Fields.deleted, 0);
-       });
-       Sort sort = Sort.by("createTime").descending();
-       return repository.findAll(spec, params.pageRequest(sort));
-    }
+public Page<User> list(ReqUserListVO params) {
+   Specification<User> spec = SpecificationUtils.where(e -> {
+       e.eq(User.Fields.userType, params.getUserType())
+        .contains(User.Fields.userName, params.getUserName())
+        .eq(User.Fields.assigneeId, AuthHelper.currentUserId())
+        .or(e2 -> e2.eq(User.Fields.status, "1").eq(User.Fields.status, "2"))
+        .eq(User.Fields.deleted, 0);
+   });
+   Sort sort = Sort.by("createTime").descending();
+   return repository.findAll(spec, params.pageRequest(sort));
 }
 ```
+
+##两者结合使用
+
+Zuji-Jpa支持将`入参定义式`和`JAVA动态链式`两者结合在一起使用，可以面对更多复杂的场景。
+
+首先需要定义入参实体类，具体参考[入参定义式](#parameterDefinition)

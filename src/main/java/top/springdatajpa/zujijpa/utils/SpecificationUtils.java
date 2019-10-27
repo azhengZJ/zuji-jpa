@@ -46,7 +46,7 @@ public class SpecificationUtils {
         return conditionOf(object, e -> {});
     }
 
-    public static <T> Specification<T> conditionOf(Object object, Consumer<OperatorWrapper> action) {
+    public static <T> Specification<T> conditionOf(Object object, Consumer<SpecificationWrapper<T>> action) {
         Map<Field,Object> map = EntityUtils.notNullCastToMap(object);
         Specification<T> s =  where(e -> {
             map.forEach((k, v) -> {
@@ -67,8 +67,8 @@ public class SpecificationUtils {
                     wrapper.setName(getPathName(k.getName(), joinCol));
                 }
                 operator.consumer().accept(wrapper);
-                action.accept(wrapper);
             });
+            action.accept(e);
         });
         return s;
     }

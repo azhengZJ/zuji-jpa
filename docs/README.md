@@ -14,9 +14,9 @@
 
 ## 愿景
 
- [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 越来越流行，极大的方便了对数据库的操作，但是spring data jpa在复杂查询方面，表现的很吃力，虽然提供了specification查询，但是使用起来不是很优雅。
+ [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 目前越来越流行，极大的方便了对数据库的操作，但是Spring Data JPA在复杂查询方面，表现的很糟糕，虽然提供了`specification`查询，但是使用起来不是很优雅。
 
-鉴于此，为了减少开发人员书写查询逻辑代码和sql ，我基于`specification`功能开发出了为简化开发而生的Zuji-JPA框架，Zuji-JPA 中引入了 `入参定义式零逻辑` 和 `极简Java动态链式` 两种查询方式来替代动态SQL。基本解决开发过程中遇到的大部分场景，用更简单的方式去实现动态查询。
+鉴于此，为了减少开发人员书写查询逻辑代码和sql ，我基于`specification`功能开发出了为简化开发而生的`Zuji-JPA`框架，`Zuji-JPA` 中引入了 `入参定义式零逻辑` 和 `极简Java动态链式` 两种查询方式来替代动态SQL。基本解决开发过程中遇到的大部分场景，用更简单的方式去实现动态查询。
 
 当然，开发中还是会遇到更复杂的sql场景，这里引入了 `Fenix` 开源库，可以比mybatis更方便的去书写动态SQL。
 
