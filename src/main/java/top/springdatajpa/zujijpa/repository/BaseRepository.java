@@ -7,7 +7,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 /**
  * @author azheng
  * @since 2019/10/22
- * @param <T>
+ * @param <T> Entity class
  */
 @NoRepositoryBean
 public interface BaseRepository<T>  extends JpaRepository<T,Long>, JpaSpecificationExecutor<T> {

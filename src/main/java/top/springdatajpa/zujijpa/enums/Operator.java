@@ -11,7 +11,7 @@ import java.util.function.Consumer;
  */
 public enum Operator {
     /**
-     * =
+     * equal
      */
     EQ(e -> e.getSpecWrapper().eq(e.getName(), e.getValue())),
     /**
@@ -31,19 +31,19 @@ public enum Operator {
      */
     CONTAINS(e -> e.getSpecWrapper().contains(e.getName(), (String)e.getValue())),
     /**
-     * >=
+     * Greater than or equal to
      */
     GT_OR_EQ(e -> e.getSpecWrapper().gtOrEq(e.getName(), e.getCompareValue())),
     /**
-     * <=
+     * Less than or equal to
      */
     LT_OR_EQ(e -> e.getSpecWrapper().ltOrEq(e.getName(), e.getCompareValue())),
     /**
-     * >
+     * Greater than
      */
     GT(e -> e.getSpecWrapper().gt(e.getName(), e.getCompareValue())),
     /**
-     * <
+     * Less than
      */
     LT(e -> e.getSpecWrapper().lt(e.getName(), e.getCompareValue())),
     /**

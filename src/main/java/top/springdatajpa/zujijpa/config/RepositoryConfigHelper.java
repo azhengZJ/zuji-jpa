@@ -28,10 +28,10 @@ public class RepositoryConfigHelper {
      *
      * By default, SQL log printing, automatic table creation,
      *   underline and hump automatic conversion, mysql dialect are enabled.
-     * @param dataSource
-     * @param entityPackage
-     * @param action
-     * @return
+     * @param dataSource dataSource
+     * @param entityPackage entityPackage
+     * @param action action
+     * @return LocalContainerEntityManagerFactoryBean
      */
     public static LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, String entityPackage,
                                                                               BiConsumer<HibernateJpaVendorAdapter,Properties> action) {
