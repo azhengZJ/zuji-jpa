@@ -104,7 +104,7 @@ public class BlogController {
 
     @PostMapping("/list")
     public Object list(@RequestBody ReqBlogQueryVO query){
-        Specification<Blog> spec = SpecificationUtils.conditionOf(query);
+        Specification<Blog> spec = Specifications.conditionOf(query);
         return repository.findAll(spec);
     }
 }
@@ -142,7 +142,7 @@ public class UserController {
     
     @GetMapping("/list")
     public Page<User> list(ReqUserListVO params) {
-       Specification<User> spec = SpecificationUtils.where(e -> {
+       Specification<User> spec = Specifications.where(e -> {
            if (!params.getUserType().equals(UserType.ALL)) {
                e.eq("userType", params.getUserType());
            }
@@ -163,6 +163,25 @@ public class UserController {
     }
 }
 ```
+
+判断条件也可以放在方法里面，看起来更简洁一点，如下
+```java
+public Page<User> list(ReqUserListVO params) {
+   Specification<User> spec = Specifications.where(e -> {
+       e.eq(!params.getUserType().equals(UserType.ALL), "userType", params.getUserType());
+       e.contains(params.getUserName() != null, "userName", params.getUserName());
+       e.eq(params.getRange() != null, "assigneeId", AuthHelper.currentUserId());
+       e.or(e2 -> {
+           e2.eq("status", "1");
+           e2.eq("status", "2");
+       });
+       e.eq("deleted", 0);
+   });
+   Sort sort = Sort.by("createTime").descending();
+   return repository.findAll(spec, params.pageRequest(sort));
+}
+```
+
 如果没有条件判断也可以写成这样，链式编程
 
 ```java
@@ -175,7 +194,7 @@ public class UserController {
     
     @GetMapping("/list")
     public Page<User> list(ReqUserListVO params) {
-       Specification<User> spec = SpecificationUtils.where(e -> {
+       Specification<User> spec = Specifications.where(e -> {
            e.eq("userType", params.getUserType())
             .contains("userName", params.getUserName())
             .eq("assigneeId", AuthHelper.currentUserId())
@@ -206,9 +225,10 @@ ORDER BY
 	LIMIT 0,10
 ```
 
-> **注**：如果第一层（最外面层）是OR关联查询，调用where方法的时候需要添加一个参数Predicate.BooleanOperator.OR
+> **注**：如果第一层（最外面层）是OR关联查询，调用where方法的时候需要添加一个参数isConjunction，为true的时候为and连接（默认为true），为false的时候为or连接。
+
 ```java
-Specification<Blog> spec = SpecificationUtils.where(Predicate.BooleanOperator.OR, e -> {
+Specification<Blog> spec = Specifications.where(false, e -> {
     e.eq(Blog.Fields.deleted,query.getAuthor());
 });
 return repository.findAll(spec);
@@ -226,7 +246,7 @@ public class Blog {
 
 ```java
 public Page<User> list(ReqUserListVO params) {
-   Specification<User> spec = SpecificationUtils.where(e -> {
+   Specification<User> spec = Specifications.where(e -> {
        e.eq(User.Fields.userType, params.getUserType())
         .contains(User.Fields.userName, params.getUserName())
         .eq(User.Fields.assigneeId, AuthHelper.currentUserId())
@@ -247,7 +267,7 @@ Zuji-Jpa支持将`入参定义式`和`JAVA动态链式`两者结合在一起使�
 ```java
 @PostMapping("/list")
 public Object list(@RequestBody ReqBlogQueryVO query){
-    Specification<Blog> spec = SpecificationUtils.conditionOf(query,e -> {
+    Specification<Blog> spec = Specifications.conditionOf(query,e -> {
         e.eq(Blog.Fields.deleted,query.getAuthor());
         // 如上，在此添加需要的查询，参考第二节 java动态链式 查询
     });

@@ -10,15 +10,45 @@ import java.util.function.Consumer;
  * @since 2019/9/30
  */
 public enum Operator {
-    EQUAL(e -> e.getSpecWrapper().eq(e.getName(), e.getValue())),
+    /**
+     * =
+     */
+    EQ(e -> e.getSpecWrapper().eq(e.getName(), e.getValue())),
+    /**
+     * like "#{value}"
+     */
     LIKE(e -> e.getSpecWrapper().like(e.getName(), (String)e.getValue())),
+    /**
+     * like "#{value}%"
+     */
     STARTING_WITH(e -> e.getSpecWrapper().startingWith(e.getName(), (String)e.getValue())),
+    /**
+     * like "%#{value}"
+     */
     ENDING_WITH(e -> e.getSpecWrapper().endingWith(e.getName(), (String)e.getValue())),
+    /**
+     * like "%#{value}%"
+     */
     CONTAINS(e -> e.getSpecWrapper().contains(e.getName(), (String)e.getValue())),
-    GREATER_THAN_EQUAL_TO(e -> e.getSpecWrapper().greaterThanOrEqualTo(e.getName(), e.getCompareValue())),
-    LESS_THAN_EQUAL_TO(e -> e.getSpecWrapper().lessThanOrEqualTo(e.getName(), e.getCompareValue())),
-    GREATER_THAN(e -> e.getSpecWrapper().greaterThan(e.getName(), e.getCompareValue())),
-    LESS_THAN(e -> e.getSpecWrapper().lessThan(e.getName(), e.getCompareValue())),
+    /**
+     * >=
+     */
+    GT_OR_EQ(e -> e.getSpecWrapper().gtOrEq(e.getName(), e.getCompareValue())),
+    /**
+     * <=
+     */
+    LT_OR_EQ(e -> e.getSpecWrapper().ltOrEq(e.getName(), e.getCompareValue())),
+    /**
+     * >
+     */
+    GT(e -> e.getSpecWrapper().gt(e.getName(), e.getCompareValue())),
+    /**
+     * <
+     */
+    LT(e -> e.getSpecWrapper().lt(e.getName(), e.getCompareValue())),
+    /**
+     * in (#{collection})
+     */
     IN(e -> e.getSpecWrapper().in(e.getName(), (Collection<?>) e.getValue()))
     ;
     private Consumer<OperatorWrapper> consumer;

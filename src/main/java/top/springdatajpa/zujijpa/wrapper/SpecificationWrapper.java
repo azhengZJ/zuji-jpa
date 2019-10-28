@@ -2,7 +2,7 @@ package top.springdatajpa.zujijpa.wrapper;
 
 import lombok.Getter;
 import lombok.Setter;
-import top.springdatajpa.zujijpa.utils.SpecificationUtils;
+import top.springdatajpa.zujijpa.Specifications;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
@@ -33,19 +33,18 @@ public class SpecificationWrapper<T> {
     }
 
     public SpecificationWrapper<T> or(Consumer<SpecificationWrapper<T>> action) {
-        return this.newWrapper(Predicate.BooleanOperator.OR, action);
+        return this.newWrapper(false, action);
     }
 
     public SpecificationWrapper<T> and(Consumer<SpecificationWrapper<T>> action) {
-        return this.newWrapper(Predicate.BooleanOperator.AND, action);
+        return this.newWrapper(true, action);
     }
 
-    public SpecificationWrapper<T> newWrapper(Predicate.BooleanOperator operator,
+    public SpecificationWrapper<T> newWrapper(boolean isConjunction,
                                               Consumer<SpecificationWrapper<T>> action) {
         SpecificationWrapper<T> specification = new SpecificationWrapper<>(root, query, builder);
         CriteriaBuilder newBuilder = specification.getBuilder();
-        Predicate predicate = SpecificationUtils.isConjunction(operator)?
-                newBuilder.conjunction():newBuilder.disjunction();
+        Predicate predicate = isConjunction ? newBuilder.conjunction() : newBuilder.disjunction();
         action.accept(specification);
         predicate.getExpressions().addAll(specification.getPredicates()) ;
         predicates.add(predicate);
@@ -92,41 +91,41 @@ public class SpecificationWrapper<T> {
         return this;
     }
 
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> greaterThanOrEqualTo(String name, Y data) {
-        return handle(name, e -> this.greaterThanOrEqualTo(e, data));
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> gtOrEq(String name, Y data) {
+        return handle(name, e -> this.gtOrEq(e, data));
     }
 
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> lessThanOrEqualTo(String name, Y data) {
-        return handle(name, e -> this.lessThanOrEqualTo(e, data));
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> ltOrEq(String name, Y data) {
+        return handle(name, e -> this.ltOrEq(e, data));
     }
 
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> greaterThan(String name, Y data) {
-        return handle(name, e -> this.greaterThan(e, data));
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> gt(String name, Y data) {
+        return handle(name, e -> this.gt(e, data));
     }
 
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> lessThan(String name, Y data) {
-        return handle(name, e -> this.lessThan(e, data));
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> lt(String name, Y data) {
+        return handle(name, e -> this.lt(e, data));
     }
 
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> greaterThanOrEqualTo
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> gtOrEq
             (Expression<? extends Y> path, Y data) {
         predicates.add(builder.greaterThanOrEqualTo(path, data));
         return this;
     }
 
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> lessThanOrEqualTo
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> ltOrEq
             (Expression<? extends Y> path, Y data) {
         predicates.add(builder.lessThanOrEqualTo(path, data));
         return this;
     }
 
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> greaterThan
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> gt
             (Expression<? extends Y> path, Y data) {
         predicates.add(builder.greaterThan(path, data));
         return this;
     }
 
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> lessThan
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> lt
             (Expression<? extends Y> path, Y data) {
         predicates.add(builder.lessThan(path, data));
         return this;

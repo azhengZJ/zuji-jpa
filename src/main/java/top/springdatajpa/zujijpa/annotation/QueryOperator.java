@@ -12,6 +12,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface QueryOperator {
-    Operator value() default Operator.EQUAL;
+    Operator value() default Operator.EQ;
     String fieldName() default "";
 }

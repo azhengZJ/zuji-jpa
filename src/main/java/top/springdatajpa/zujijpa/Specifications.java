@@ -1,4 +1,4 @@
-package top.springdatajpa.zujijpa.utils;
+package top.springdatajpa.zujijpa;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.data.jpa.domain.Specification;
@@ -6,6 +6,7 @@ import org.springframework.util.StringUtils;
 import top.springdatajpa.zujijpa.annotation.QueryIgnore;
 import top.springdatajpa.zujijpa.annotation.QueryOperator;
 import top.springdatajpa.zujijpa.enums.Operator;
+import top.springdatajpa.zujijpa.utils.EntityUtils;
 import top.springdatajpa.zujijpa.wrapper.OperatorWrapper;
 import top.springdatajpa.zujijpa.wrapper.SpecificationWrapper;
 
@@ -13,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Predicate.BooleanOperator;
 import javax.persistence.criteria.Root;
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -22,23 +22,31 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
+ * Specifications query the core tool class
  * @author azheng
  * @since 2019/5/7
  */
 @UtilityClass
-public class SpecificationUtils {
+public class Specifications {
 
     public static <T> Specification<T> where(Consumer<SpecificationWrapper<T>> action) {
-        return where(BooleanOperator.AND, action);
+        return where(true, action);
     }
 
-    public static <T> Specification<T> where(BooleanOperator operator, Consumer<SpecificationWrapper<T>> action) {
+    /**
+     *  Specification generate the most core method
+     * @param isConjunction True is `and` connection, false is `or` connection
+     * @param action Query code
+     * @param <T>  Main table entity class of query
+     * @return Specification
+     */
+    public static <T> Specification<T> where(boolean isConjunction, Consumer<SpecificationWrapper<T>> action) {
         return (Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
             SpecificationWrapper<T> specification = new SpecificationWrapper<>(root, query, builder);
             action.accept(specification);
             List<Predicate> predicates = specification.getPredicates();
             Predicate[] arr = predicates.toArray(new Predicate[predicates.size()]);
-            return isConjunction(operator)?builder.and(arr):builder.or(arr);
+            return isConjunction?builder.and(arr):builder.or(arr);
         };
     }
 
@@ -57,7 +65,7 @@ public class SpecificationUtils {
                 QueryOperator query = k.getAnnotation(QueryOperator.class);
                 JoinColumn joinCol = k.getAnnotation(JoinColumn.class);
                 if(ignore != null) return;
-                Operator operator = query != null?query.value(): Operator.EQUAL;
+                Operator operator = query != null?query.value(): Operator.EQ;
                 if(v instanceof Collection){
                     operator = Operator.IN;
                 }
@@ -78,10 +86,6 @@ public class SpecificationUtils {
             name = joinCol.name() + "." + name;
         }
         return name;
-    }
-
-    public static boolean isConjunction(BooleanOperator operator){
-        return operator.compareTo(BooleanOperator.AND) == 0;
     }
 
 }
