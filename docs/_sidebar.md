@@ -5,7 +5,6 @@
 - 定义式零逻辑
   - [总体示例](easy/example)
   - [入参定义](easy/annotation)
-  - [自定义扩展](easy/extend)
 - 简单java动态链式
   - [总体示例](complex/example)
   - [API方法](complex/method)

@@ -24,7 +24,7 @@ private String name;
 
 ## Operator
 
-这是QueryOperator注解定义的value值对应的注解。
+这是QueryOperator注解里value值的枚举。
 
 ```java
 public enum Operator {
