@@ -268,7 +268,7 @@ Zuji-Jpa支持将`入参定义式`和`JAVA动态链式`两者结合在一起使�
 @PostMapping("/list")
 public Object list(@RequestBody ReqBlogQueryVO query){
     Specification<Blog> spec = Specifications.conditionOf(query,e -> {
-        e.eq(Blog.Fields.deleted,query.getAuthor());
+        e.eq(Blog.Fields.deleted, 0);
         // 如上，在此添加需要的查询，参考第二节 java动态链式 查询
     });
     return repository.findAll(spec);
