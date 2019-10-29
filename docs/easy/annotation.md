@@ -19,7 +19,7 @@ private String name;
 
 ```
 
-这是定义入参实体类最核心的注解，value指定查询关键字，默认为equal，fieldName 指定查询映射实体类的字段名称。
+这是定义入参实体类最核心的注解，value指定查询关键字，默认为equal，fieldName 指定查询映射实体类的字段名称，默认为字段名。
 
 
 ## Operator
