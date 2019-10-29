@@ -4,7 +4,7 @@
   - [快速开始](quick-start)
 - 定义式零逻辑
   - [总体示例](easy/example)
-  - [注解](easy/annotation)
+  - [入参定义](easy/annotation)
   - [自定义扩展](easy/extend)
 - 简单java动态链式
   - [总体示例](complex/example)

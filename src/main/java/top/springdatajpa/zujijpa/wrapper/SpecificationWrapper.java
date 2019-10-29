@@ -2,7 +2,6 @@ package top.springdatajpa.zujijpa.wrapper;
 
 import lombok.Getter;
 import lombok.Setter;
-import top.springdatajpa.zujijpa.Specifications;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
@@ -40,8 +39,7 @@ public class SpecificationWrapper<T> {
         return this.newWrapper(true, action);
     }
 
-    public SpecificationWrapper<T> newWrapper(boolean isConjunction,
-                                              Consumer<SpecificationWrapper<T>> action) {
+    public SpecificationWrapper<T> newWrapper(boolean isConjunction, Consumer<SpecificationWrapper<T>> action) {
         SpecificationWrapper<T> specification = new SpecificationWrapper<>(root, query, builder);
         CriteriaBuilder newBuilder = specification.getBuilder();
         Predicate predicate = isConjunction ? newBuilder.conjunction() : newBuilder.disjunction();
@@ -51,102 +49,209 @@ public class SpecificationWrapper<T> {
         return this;
     }
 
-    public SpecificationWrapper<T> eq(boolean condition, String name, Object data) {
-        if(condition){
-            this.eq(name, data);
-        }
+    public SpecificationWrapper<T> isNull(boolean condition, String name) {
+        return condition ? this.isNull(name) : this;
+    }
+
+    public SpecificationWrapper<T> isNull(String name) {
+        return handle(name, e -> this.isNull(e));
+    }
+
+    public SpecificationWrapper<T> isNull(Expression<?> x) {
+        predicates.add(builder.isNull(x));
         return this;
     }
 
-    public SpecificationWrapper<T> eq(String name, Object data) {
-        return handle(name, e -> this.eq(e, data));
+    public SpecificationWrapper<T> isNotNull(boolean condition, String name) {
+        return condition ? this.isNotNull(name) : this;
     }
 
-    public SpecificationWrapper<T> eq(Expression<?> x, Object data) {
-        predicates.add(builder.equal(x, data));
+    public SpecificationWrapper<T> isNotNull(String name) {
+        return handle(name, e -> this.isNotNull(e));
+    }
+
+    public SpecificationWrapper<T> isNotNull(Expression<?> x) {
+        predicates.add(builder.isNotNull(x));
         return this;
     }
 
-    public SpecificationWrapper<T> like(String name, String data) {
-        return handle(name, e -> this.like(e, data));
+    public SpecificationWrapper<T> eq(boolean condition, String name, Object value) {
+        return condition ? this.eq(name, value) : this;
     }
 
-    public SpecificationWrapper<T> like(Expression<String> path, String data){
-        predicates.add(builder.like(path, data));
+    public SpecificationWrapper<T> eq(String name, Object value) {
+        return handle(name, e -> this.eq(e, value));
+    }
+
+    public SpecificationWrapper<T> eq(Expression<?> x, Object value) {
+        predicates.add(builder.equal(x, value));
         return this;
     }
 
-    public SpecificationWrapper<T> startingWith(String name, String data) {
-        this.like(name,data+"%");
+    public SpecificationWrapper<T> ne(boolean condition, String name, Object value) {
+        return condition ? this.ne(name, value) : this;
+    }
+
+    public SpecificationWrapper<T> ne(String name, Object value) {
+        return handle(name, e -> this.ne(e, value));
+    }
+
+    public SpecificationWrapper<T> ne(Expression<?> x, Object value) {
+        predicates.add(builder.notEqual(x, value));
         return this;
     }
 
-    public SpecificationWrapper<T> endingWith(String name, String data) {
-        this.like(name,"%"+data);
+    public SpecificationWrapper<T> like(boolean condition, String name, String value) {
+        return condition ? this.like(name, value) : this;
+    }
+
+    public SpecificationWrapper<T> like(String name, String value) {
+        return handle(name, e -> this.like(e, value));
+    }
+
+    public SpecificationWrapper<T> like(Expression<String> path, String value){
+        predicates.add(builder.like(path, value));
         return this;
     }
 
-    public SpecificationWrapper<T> contains(String name, String data){
-        this.like(name,"%"+data+"%");
+    public SpecificationWrapper<T> startingWith(boolean condition, String name, String value) {
+        return condition ? this.startingWith(name, value) : this;
+    }
+
+    public SpecificationWrapper<T> startingWith(String name, String value) {
+        this.like(name,value+"%");
         return this;
     }
 
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> gtOrEq(String name, Y data) {
-        return handle(name, e -> this.gtOrEq(e, data));
+    public SpecificationWrapper<T> endingWith(boolean condition, String name, String value) {
+        return condition ? this.endingWith(name, value) : this;
     }
 
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> ltOrEq(String name, Y data) {
-        return handle(name, e -> this.ltOrEq(e, data));
-    }
-
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> gt(String name, Y data) {
-        return handle(name, e -> this.gt(e, data));
-    }
-
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> lt(String name, Y data) {
-        return handle(name, e -> this.lt(e, data));
-    }
-
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> gtOrEq
-            (Expression<? extends Y> path, Y data) {
-        predicates.add(builder.greaterThanOrEqualTo(path, data));
+    public SpecificationWrapper<T> endingWith(String name, String value) {
+        this.like(name,"%"+value);
         return this;
     }
 
-    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> ltOrEq
-            (Expression<? extends Y> path, Y data) {
-        predicates.add(builder.lessThanOrEqualTo(path, data));
+    public SpecificationWrapper<T> contains(boolean condition, String name, String value) {
+        return condition ? this.contains(name, value) : this;
+    }
+
+    public SpecificationWrapper<T> contains(String name, String value){
+        this.like(name,"%"+value+"%");
         return this;
+    }
+
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> ge(boolean condition, String name, Y value) {
+        return condition ? this.ge(name, value) : this;
+    }
+
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> ge(String name, Y value) {
+        return handle(name, e -> this.ge(e, value));
+    }
+
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> ge
+            (Expression<? extends Y> path, Y value) {
+        predicates.add(builder.greaterThanOrEqualTo(path, value));
+        return this;
+    }
+
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> le(boolean condition, String name, Y value) {
+        return condition ? this.le(name, value) : this;
+    }
+
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> le(String name, Y value) {
+        return handle(name, e -> this.le(e, value));
+    }
+
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> le
+            (Expression<? extends Y> path, Y value) {
+        predicates.add(builder.lessThanOrEqualTo(path, value));
+        return this;
+    }
+
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> gt(boolean condition, String name, Y value) {
+        return condition ? this.gt(name, value) : this;
+    }
+
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> gt(String name, Y value) {
+        return handle(name, e -> this.gt(e, value));
     }
 
     public <Y extends Comparable<? super Y>> SpecificationWrapper<T> gt
-            (Expression<? extends Y> path, Y data) {
-        predicates.add(builder.greaterThan(path, data));
+            (Expression<? extends Y> path, Y value) {
+        predicates.add(builder.greaterThan(path, value));
         return this;
+    }
+
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> lt(boolean condition, String name, Y value) {
+        return condition ? this.lt(name, value) : this;
+    }
+
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> lt(String name, Y value) {
+        return handle(name, e -> this.lt(e, value));
     }
 
     public <Y extends Comparable<? super Y>> SpecificationWrapper<T> lt
-            (Expression<? extends Y> path, Y data) {
-        predicates.add(builder.lessThan(path, data));
+            (Expression<? extends Y> path, Y value) {
+        predicates.add(builder.lessThan(path, value));
         return this;
     }
 
-    public SpecificationWrapper<T> in(String name, Object... data) {
-        return handle(name, e -> this.in(e, data));
+    public SpecificationWrapper<T> in(boolean condition, String name, Object... value) {
+        return condition ? in(name, value) : this;
     }
 
-    public <U> SpecificationWrapper<T> in(Expression<? extends U> expression, Object... data) {
-        predicates.add(expression.in(data));
+    public SpecificationWrapper<T> in(String name, Object... value) {
+        return handle(name, e -> this.in(e, value));
+    }
+
+    public SpecificationWrapper<T> in(boolean condition, String name, Collection<?> value) {
+        return condition ? in(name, value) : this;
+    }
+
+    public SpecificationWrapper<T> in(String name, Collection<?> value) {
+        return this.in(name, value.toArray());
+    }
+
+    public <U> SpecificationWrapper<T> in(Expression<? extends U> expression, Object... value) {
+        predicates.add(expression.in(value));
         return this;
+    }
+
+    public SpecificationWrapper<T> notIn(boolean condition, String name, Collection<?> value) {
+        return condition ? notIn(name, value) : this;
+    }
+
+    public SpecificationWrapper<T> notIn(String name, Collection<?> value) {
+        return handle(name, e -> this.notIn(e, value.toArray()));
+    }
+
+    public SpecificationWrapper<T> notIn(boolean condition, String name, Object... value) {
+        return condition ? notIn(name, value) : this;
+    }
+
+    public SpecificationWrapper<T> notIn(String name, Object... value) {
+        return handle(name, e -> this.notIn(e, value));
+    }
+
+    public <U> SpecificationWrapper<T> notIn(Expression<? extends U> expression, Object... value) {
+        predicates.add(expression.in(value).not());
+        return this;
+    }
+
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> between(boolean condition,
+                                                                             String name, Y start, Y end){
+        return condition ? between(name, start, end) : this;
     }
 
     public <Y extends Comparable<? super Y>> SpecificationWrapper<T> between(String name, Y start, Y end){
-        predicates.add(builder.between(root.get(name), start, end));
-        return this;
+        return handle(name, e -> this.between(e, start, end));
     }
 
-    public SpecificationWrapper<T> in(String name, Collection<?> data) {
-        return this.in(name, data.toArray());
+    public <Y extends Comparable<? super Y>> SpecificationWrapper<T> between(Expression<? extends Y> path,
+                                                                             Y start, Y end){
+        predicates.add(builder.between(path, start, end));
+        return this;
     }
 
     public <U> Join<T,U> leftJoin(String fieldName) {

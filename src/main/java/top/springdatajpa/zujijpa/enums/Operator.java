@@ -15,29 +15,33 @@ public enum Operator {
      */
     EQ(e -> e.getSpecWrapper().eq(e.getName(), e.getValue())),
     /**
-     * like "#{value}"
+     * not equal
+     */
+    NE(e -> e.getSpecWrapper().ne(e.getName(), e.getValue())),
+    /**
+     * like "value"
      */
     LIKE(e -> e.getSpecWrapper().like(e.getName(), (String)e.getValue())),
     /**
-     * like "#{value}%"
+     * like "value%"
      */
     STARTING_WITH(e -> e.getSpecWrapper().startingWith(e.getName(), (String)e.getValue())),
     /**
-     * like "%#{value}"
+     * like "%value"
      */
     ENDING_WITH(e -> e.getSpecWrapper().endingWith(e.getName(), (String)e.getValue())),
     /**
-     * like "%#{value}%"
+     * like "%value%"
      */
     CONTAINS(e -> e.getSpecWrapper().contains(e.getName(), (String)e.getValue())),
     /**
      * Greater than or equal to
      */
-    GT_OR_EQ(e -> e.getSpecWrapper().gtOrEq(e.getName(), e.getCompareValue())),
+    GE(e -> e.getSpecWrapper().ge(e.getName(), e.getCompareValue())),
     /**
      * Less than or equal to
      */
-    LT_OR_EQ(e -> e.getSpecWrapper().ltOrEq(e.getName(), e.getCompareValue())),
+    LE(e -> e.getSpecWrapper().le(e.getName(), e.getCompareValue())),
     /**
      * Greater than
      */
@@ -47,9 +51,13 @@ public enum Operator {
      */
     LT(e -> e.getSpecWrapper().lt(e.getName(), e.getCompareValue())),
     /**
-     * in (#{collection})
+     * in (collection)
      */
-    IN(e -> e.getSpecWrapper().in(e.getName(), (Collection<?>) e.getValue()))
+    IN(e -> e.getSpecWrapper().in(e.getName(), (Collection<?>) e.getValue())),
+    /**
+     * not in (collection)
+     */
+    NOT_IN(e -> e.getSpecWrapper().notIn(e.getName(), (Collection<?>) e.getValue()))
     ;
     private Consumer<OperatorWrapper> consumer;
     Operator(Consumer<OperatorWrapper> consumer){
