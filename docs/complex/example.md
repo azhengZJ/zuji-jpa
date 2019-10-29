@@ -103,9 +103,12 @@ ORDER BY
 
 ```java
 Specification<Blog> spec = Specifications.where(false, e -> {
-    e.eq(Blog.Fields.deleted,query.getAuthor());
+    e.eq(Blog.Fields.status, 0);
+    e.eq(Blog.Fields.status, 1);
 });
-return repository.findAll(spec);
+```
+```sql
+select * from blog where status = 0 or status = 1;
 ```
 
 > **注**：上述示例中查询的字段名使用的是字符串，字符串是不被检查的，很容易出错。lombok提供了可以生成和属性名一样的的静态字段内部类的注解，实体类上面添加@FieldNameConstants注解即可使用。
