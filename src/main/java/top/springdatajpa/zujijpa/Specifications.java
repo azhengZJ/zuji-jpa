@@ -1,6 +1,5 @@
 package top.springdatajpa.zujijpa;
 
-import lombok.experimental.UtilityClass;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 import top.springdatajpa.zujijpa.annotation.QueryIgnore;
@@ -26,7 +25,6 @@ import java.util.function.Consumer;
  * @author azheng
  * @since 2019/5/7
  */
-@UtilityClass
 public class Specifications {
 
     public static <T> Specification<T> where(Consumer<SpecificationWrapper<T>> action) {
@@ -81,7 +79,56 @@ public class Specifications {
         return s;
     }
 
-    private String getPathName(String name, JoinColumn joinCol){
+    public static <T> Specification<T> extendWhere(boolean isConjunction, SpecificationWrapper specification, Consumer<SpecificationWrapper> action) {
+        return (Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) -> {
+            specification.setRoot(root);
+            specification.setQuery(query);
+            specification.setBuilder(builder);
+            action.accept(specification);
+            List<Predicate> predicates = specification.getPredicates();
+            Predicate[] arr = predicates.toArray(new Predicate[predicates.size()]);
+            return isConjunction?builder.and(arr):builder.or(arr);
+        };
+    }
+
+    public static <T> Specification<T> extendWhere(SpecificationWrapper specification, Consumer<? extends SpecificationWrapper> action) {
+        return extendWhere(true, specification, (Consumer<SpecificationWrapper>) action);
+    }
+
+    public static <T> Specification<T> extendConditionOf(Boolean isConjunction, Object object, SpecificationWrapper specification,
+                                                         Consumer<SpecificationWrapper> action) {
+        Map<Field,Object> map = EntityUtils.notNullCastToMap(object);
+        Specification<T> s =  extendWhere(isConjunction, specification, e -> {
+            map.forEach((k, v) -> {
+                OperatorWrapper wrapper = new OperatorWrapper();
+                wrapper.setSpecWrapper(e);
+                wrapper.setValue(v);
+                QueryIgnore ignore = k.getAnnotation(QueryIgnore.class);
+                QueryOperator query = k.getAnnotation(QueryOperator.class);
+                JoinColumn joinCol = k.getAnnotation(JoinColumn.class);
+                if(ignore != null) return;
+                Operator operator = query != null?query.value(): Operator.EQ;
+                if(v instanceof Collection){
+                    operator = Operator.IN;
+                }
+                if(query != null && StringUtils.hasText(query.fieldName())){
+                    wrapper.setName(getPathName(query.fieldName(), joinCol));
+                }else{
+                    wrapper.setName(getPathName(k.getName(), joinCol));
+                }
+                operator.consumer().accept(wrapper);
+            });
+            action.accept(e);
+        });
+        return s;
+    }
+
+    public static <T> Specification<T> extendConditionOf(Object object, SpecificationWrapper specification,
+                                                         Consumer<? extends SpecificationWrapper> action) {
+        return extendConditionOf(true, object, specification, (Consumer<SpecificationWrapper>) action);
+    }
+
+    private static String getPathName(String name, JoinColumn joinCol){
         if(joinCol != null && !name.contains(".")){
             name = joinCol.name() + "." + name;
         }

@@ -1,6 +1,7 @@
 package top.springdatajpa.zujijpa.wrapper;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.criteria.*;
@@ -15,6 +16,7 @@ import java.util.function.Consumer;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class SpecificationWrapper<T> {
 
     private Root<T> root;
@@ -258,7 +260,7 @@ public class SpecificationWrapper<T> {
         return root.join(fieldName, JoinType.LEFT);
     }
 
-    private SpecificationWrapper<T> handle(String name, Consumer<Path> action) {
+    public SpecificationWrapper<T> handle(String name, Consumer<Path> action) {
         Path<?> path;
         if(name.contains(SEPARATOR)){
             String[] arr = name.split("\\"+SEPARATOR);
