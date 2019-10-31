@@ -24,7 +24,7 @@ public class SpecificationWrapperExtend<T> extends SpecificationWrapper<T> {
     /**
     * 自定义方法
     */
-    public SpecificationWrapper<T> extendEq(Expression<?> x, Object value) {
+    public SpecificationWrapper<T> customEq(Expression<?> x, Object value) {
         super.getPredicates().add(super.getBuilder().equal(x, value));
         return this;
     }
@@ -47,7 +47,7 @@ public class SpecificationWrapperExtend<T> extends SpecificationWrapper<T> {
     /**
     * 如果有嵌套查询内部使用到自定义方法 则需要定义此方法
     */
-    public SpecificationWrapper<T> newWrapperExtend(boolean isConjunction, Consumer<SpecificationWrapperExtend<T>> action) {
+    public SpecificationWrapperExtend<T> newWrapperExtend(boolean isConjunction, Consumer<SpecificationWrapperExtend<T>> action) {
         SpecificationWrapperExtend<T> specification = new SpecificationWrapperExtend(super.getRoot(),
                 super.getQuery(), super.getBuilder());
         CriteriaBuilder newBuilder = specification.getBuilder();
