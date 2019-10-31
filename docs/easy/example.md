@@ -22,7 +22,7 @@ public class ReqBlogQueryVO {
     @QueryIgnore
     private Long id;
     /**
-     *  此注解等同于SQL: title like "#{title}%"
+     *  此注解等同于SQL: title like "value%"
      */
     @QueryOperator(Operator.STARTING_WITH)
     private String title;
@@ -31,7 +31,7 @@ public class ReqBlogQueryVO {
      */
     private List<String> author;
     /**
-     *  此注解等同于SQL: content like "%#{content}%"
+     *  此注解等同于SQL: content like "%value%"
      */
     @QueryOperator(Operator.CONTAINS)
     private String content;

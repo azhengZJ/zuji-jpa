@@ -19,13 +19,13 @@ public interface BlogRepository extends BaseRepository<Blog> {
 
 入参定义式查询仅支持单层条件查询，支持JOIN，支持equal、like、in、between等这些常用的查询关键字，多层嵌套复杂查询请参考下一节java动态链式查询。
 
-首先要定义查询入参的实体类，如果字段为NULL则不参与条件查询，默认使用的是equal(=)，如果是Collection类型的字段，默认使用的是 IN 查询，
+首先要定义查询入参的实体类，如果字段为NULL则不参与条件查询，默认使用的是等于equal，如果是Collection类型的字段，默认使用的是 IN 查询，
 也可以使用@QueryOperator 注解里面的 `fieldName` 字段来定义对应数据库的字段名称。
 
   
 ```java
 /**
- *  如果字段为null则不参与条件查询，默认使用的是equal(=)，
+ *  如果字段为null则不参与条件查询，默认使用的是等于equal，
  *  如果是Collection类型的字段，默认使用的是 IN 查询
  */
 @Data
@@ -36,7 +36,7 @@ public class ReqBlogQueryVO {
     @QueryIgnore
     private Long id;
     /**
-     *  此注解等同于SQL: title like "#{title}%"
+     *  此注解等同于SQL: title like "value%"
      */
     @QueryOperator(Operator.STARTING_WITH)
     private String title;
@@ -45,7 +45,7 @@ public class ReqBlogQueryVO {
      */
     private List<String> author;
     /**
-     *  此注解等同于SQL: content like "%#{content}%"
+     *  此注解等同于SQL: content like "%value%"
      */
     @QueryOperator(Operator.CONTAINS)
     private String content;
@@ -120,7 +120,7 @@ FROM
 WHERE
     b.title LIKE 'zuji%'
         AND b.author IN ('azheng1' , 'azheng2')
-        AND b.content LIKE '%博客%'
+        AND b.content LIKE '%value%'
         AND b.status = 0
         AND a.user_name = 'azheng'
 ```
