@@ -21,4 +21,9 @@ public class JpaHelper {
         List<T> result = EntityUtils.cast(pageList.getContent(), toClass);
         return new PageImpl<T>(result, page, pageList.getTotalElements());
     }
+    public <T> Page<T> castPage(Page<?> pageList, Class<T> toClass){
+        PageRequest page = PageRequest.of(pageList.getNumber(), pageList.getSize());
+        List<T> result = EntityUtils.cast(pageList.getContent(), toClass);
+        return new PageImpl<T>(result, page, pageList.getTotalElements());
+    }
 }

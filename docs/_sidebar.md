@@ -5,8 +5,9 @@
 - 定义式零逻辑
   - [总体示例](easy/example)
   - [入参定义](easy/annotation)
-- 简单java动态链式
+- JAVA动态链式
   - [总体示例](complex/example)
   - [API方法](complex/method)
+  - [自定义扩展](complex/extend)
 - [功能扩展](more-features)
 - [更新记录](CHANGELOG)
