@@ -38,7 +38,7 @@ public class RepositoryConfigHelper {
         return entityManagerFactory(dataSource, entityPackage, factory -> {
             HibernateJpaVendorAdapter jpaAdapter = new HibernateJpaVendorAdapter() {{
                 setShowSql(true);
-                setGenerateDdl(true);
+                setGenerateDdl(false);
             }};
             Properties properties = getProperties();
             action.accept(jpaAdapter,properties);
