@@ -11,13 +11,13 @@
 
 gradle
 ```groovy
-implementation 'top.spring-data-jpa:zuji-jpa:0.0.9'
+implementation 'top.spring-data-jpa:zuji-jpa:1.0.1'
 ```
 maven
 ```xml
 <dependency>
   <groupId>top.spring-data-jpa</groupId>
   <artifactId>zuji-jpa</artifactId>
-  <version>0.0.9</version>
+  <version>1.0.1</version>
 </dependency>
 ```

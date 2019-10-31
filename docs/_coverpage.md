@@ -1,6 +1,6 @@
 ![logo](assets/images/logo.png)
 
-# Zuji-JPA <small>1.0.0</small>
+# Zuji-JPA <small>1.0.1</small>
 
 > 为简化开发而生的 Spring Data JPA 增强库
 
