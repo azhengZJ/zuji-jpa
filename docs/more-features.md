@@ -79,7 +79,7 @@ public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         adapter.setShowSql(false);
         //默认为false
         adapter.setGenerateDdl(true);
-        //默认为mysql
+        //设置hibernate.dialect的配置
         properties.put(AvailableSettings.DIALECT, MysqlConfig.class.getName());
         //默认支持驼峰下划线转换
         properties.put(AvailableSettings.PHYSICAL_NAMING_STRATEGY, SpringPhysicalNamingStrategy.class.getName());
