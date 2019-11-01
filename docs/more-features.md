@@ -69,7 +69,7 @@ public class SecondRepositoryConfig {
 }
 ```
 
-也可以自定义属性.
+也可以自定义`HibernateJpaVendorAdapter`和`JpaProperties`的属性.
 
 ```java
 @Bean(name = ENTITY_MANAGER_REF)
@@ -87,7 +87,7 @@ public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 }
 ```
 
-还可以自定义更多属性
+还可以自定义`LocalContainerEntityManagerFactoryBean`的更多属性
 ```java
 @Bean(name = ENTITY_MANAGER_REF)
 public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
