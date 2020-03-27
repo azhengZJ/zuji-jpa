@@ -1,5 +1,7 @@
 # Zuji-JPA
 
+[官方文档](https://azhengzj.gitee.io/zuji-jpa/#/)
+
 > [Zuji-JPA](https://github.com/azhengZJ/zuji-jpa) 是一个不用写sql的 `Spring Data JPA` 增强库，在 Spring Data JPA 的基础上简化开发，目的是让开发者不再去书写冗长的SQL，支持 `入参定义式零逻辑` 和 `极简Java动态链式` 两种方式来代替SQL。
 
 ## 特性
